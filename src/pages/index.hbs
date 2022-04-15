@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="https://glitch.com/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Css head2head</title>
+
+    <!-- import the webpage's stylesheet -->
+    <link rel="stylesheet" href="/style.css" />   
+  </head>
+  <body>
+    <details>
+      <summary>Show join script</summary>
+      <pre><code>(function () {const quickH = (obj) => {let str = JSON.stringify(obj), hash = 5381, i = str.length;while (i) { hash = (hash * 33) ^ str.charCodeAt(--i);}return hash >>> 0;};let lastHash = -1;const url = "{{ server_url }}";const name = prompt("Enter your name to connect");const ed=document.querySelector('.react-codemirror2');const fireAndForget = (payload) => {const disH = quickH(payload);if (disH === lastHash) return;lastHash = disH;fetch(`${url}/event`, {method: 'POST',mode: 'no-cors',cache: 'no-cache',credentials: 'same-origin',headers: {'Content-Type': 'application/json'},redirect: 'follow',referrerPolicy: 'no-referrer',body: JSON.stringify(payload)}).then(() => console.log('success!')).catch(err => console.error("Failure", err));};const timer = setInterval(() => {fireAndForget({name,text: ed.innerText.replace(/^\s*1\n/, '').replace(/(\S)\n\d+\n/g, '$1\n')});}, 1000); window.cssancelConn = () => clearInterval(timer); })()</code></pre>
+    </details>
+  </body>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/app.js"></script>
+</html>
+
+

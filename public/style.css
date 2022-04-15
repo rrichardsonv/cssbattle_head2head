@@ -1,0 +1,31 @@
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+.player {
+  display: flex;
+  position: relative;
+  padding: 36px 16px 4px;
+  background: #161616;
+  color: white;
+  font-family: monospace;
+  justify-content: space-between;
+  min-width: 700px;
+}
+
+.player h3 {
+  position: absolute;
+  top: 3px;
+  margin: 0;
+}
+
+.player + .player {
+  border-top: 2px solid lime;
+}
+
+.player h3 + div {
+  height: 300px;
+  overflow-y: scroll;
+  width: 40%;
+}

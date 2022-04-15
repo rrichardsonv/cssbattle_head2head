@@ -1,0 +1,30 @@
+{
+  "name": "css_head2head",
+  "version": "0.0.1",
+  "description": "A simple Node app built on fastify, instantly up and running.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "fastify": "^3.27.4",
+    "fastify-formbody": "^5.2.0",
+    "fastify-socket.io": "^3.0.0",
+    "fastify-static": "^4.6.1",
+    "handlebars": "^4.7.7",
+    "point-of-view": "^5.2.0",
+    "socket.io": "^4.4.1"
+  },
+  "engines": {
+    "node": "12.x"
+  },
+  "repository": {
+    "url": "https://glitch.com/edit/#!/glitch-mvp-node"
+  },
+  "license": "MIT",
+  "keywords": [
+    "node",
+    "glitch",
+    "express"
+  ]
+}
