@@ -11,10 +11,19 @@
     <link rel="stylesheet" href="/style.css" />   
   </head>
   <body>
-    <details>
-      <summary>Show join script</summary>
-      <pre><code>(function () {const quickH = (obj) => {let str = JSON.stringify(obj), hash = 5381, i = str.length;while (i) { hash = (hash * 33) ^ str.charCodeAt(--i);}return hash >>> 0;};let lastHash = -1;const url = "{{ server_url }}";const name = prompt("Enter your name to connect");const ed=document.querySelector('.react-codemirror2');const fireAndForget = (payload) => {const disH = quickH(payload);if (disH === lastHash) return;lastHash = disH;fetch(`${url}/event`, {method: 'POST',mode: 'no-cors',cache: 'no-cache',credentials: 'same-origin',headers: {'Content-Type': 'application/json'},redirect: 'follow',referrerPolicy: 'no-referrer',body: JSON.stringify(payload)}).then(() => console.log('success!')).catch(err => console.error("Failure", err));};const timer = setInterval(() => {fireAndForget({name,text: ed.innerText.replace(/^\s*1\n/, '').replace(/(\S)\n\d+\n/g, '$1\n')});}, 1000); window.cssancelConn = () => clearInterval(timer); })()</code></pre>
-    </details>
+    <section id="leaderboard"></section>
+    <main>
+      <details>
+        <summary>Show join script</summary>
+        <div class="copy-container">
+          <input id="copy-text" type="text" value="{{ joinScriptMin }}">
+          <button data-copy-to-clipboard data-target="copy-text">Copy 📋 </button>
+<pre><code>
+{{joinScript}}
+</code></pre>
+        </div>
+      </details>
+    </main>
   </body>
   <script src="/socket.io/socket.io.js"></script>
   <script src="/app.js"></script>

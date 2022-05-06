@@ -1,17 +1,45 @@
 body {
   display: flex;
-  flex-direction: column;
+}
+
+#leaderboard {
+  font-size: 22px;
+  font-family: Arial;
+  display: inline-block;
+  width: 10rem;
+  z-index: 2;
+  background: #e6e6e6;
+  font-weight: bolder;
+}
+
+main {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+details,
+.player {
+  flex: 0 0 auto;
+  width: 100%;
+}
+
+details pre {
+  height: 500px;
+  overflow: scroll;
+  border-bottom: 2px dashed darkblue;
 }
 
 .player {
-  display: flex;
+  box-sizing: border-box;
+  display: inline-flex;
   position: relative;
   padding: 36px 16px 4px;
   background: #161616;
   color: white;
   font-family: monospace;
   justify-content: space-between;
-  min-width: 700px;
 }
 
 .player h3 {
@@ -22,10 +50,19 @@ body {
 
 .player + .player {
   border-top: 2px solid lime;
+  border-left: 2px solid lime;
 }
 
 .player h3 + div {
   height: 300px;
   overflow-y: scroll;
   width: 40%;
+}
+
+.multi .player {
+  width: 45%;
+}
+
+.hidden {
+  display: none !important;
 }
