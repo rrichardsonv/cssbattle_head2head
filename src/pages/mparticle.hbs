@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="https://glitch.com/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>mParticle events</title>
+
+    <!-- import the webpage's stylesheet -->
+  </head>
+  <body>
+    
+      
+  </body>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    function pipe (...fns) {
+  return (...rest) => fns.reduce((args, fn) => [fn(...args)], rest)[0];
+}
+    class Socket {
+      constructor () {
+        this.socket = io();
+        this.socket.on('cchange', this.handleChange.bind(this));
+        this.listeners = [];
+      }
+
+      addListener (cb) {
+        this.listeners.push(cb);
+      }
+
+      handleChange (payload) {
+        pipe(
+          this.parsePayload,
+          ...this.listeners
+        )(payload);
+      }
+
+      parsePayload(payload) {
+        return JSON.stringify(payload, null, 4);
+      }
+    }
+
+    const socket = new Socket();
+
+    const renderEvent = (json) => {
+      const p = document.createElement('pre');
+      const c = document.createElement('code');
+      c.textContent = json;
+
+      p.appendChild(c);
+      document.body.appendChild(p);
+    }
+
+    socket.addListener((p) => {
+      renderEvent(p);
+    })
+  </script>
+</html>
+
+

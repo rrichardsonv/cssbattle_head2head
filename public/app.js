@@ -139,7 +139,7 @@ class PreviewPlayer {
 
   update ({ text }) {
     this.pre.innerText = text;
-    this.preview.contentDocument.write(text.replace(/^\s+/gm, '').replace(/\s+$/, ''))
+    this.preview.contentDocument.write("<style>html { overflow: hidden !important; }</style>", text.replace(/^\s+/gm, '').replace(/\s+$/, ''))
     this.preview.contentWindow.document.close();
   }
 

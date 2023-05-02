@@ -22,6 +22,9 @@ main {
 details,
 .player {
   flex: 0 0 auto;
+}
+
+details {
   width: 100%;
 }
 
