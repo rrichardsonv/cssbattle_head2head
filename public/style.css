@@ -1,68 +1,418 @@
 body {
-  display: flex;
-}
-
-#leaderboard {
-  font-size: 22px;
-  font-family: Arial;
-  display: inline-block;
-  width: 10rem;
-  z-index: 2;
-  background: #e6e6e6;
-  font-weight: bolder;
+  padding-top: 50px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  grid-template-areas:
+    "f1 cont f2"
+    "f3 cont f4";
+  background: aliceblue;
+  place-content: center;
+  place-items: center;
 }
 
 main {
+  margin-top: 100px;
+  padding: 0 16px;
   width: 100%;
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+  grid-area: cont;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
-details,
-.player {
-  flex: 0 0 auto;
-  width: 100%;
-}
-
-details pre {
-  height: 500px;
-  overflow: scroll;
-  border-bottom: 2px dashed darkblue;
-}
-
-.player {
-  box-sizing: border-box;
-  display: inline-flex;
-  position: relative;
-  padding: 36px 16px 4px;
-  background: #161616;
-  color: white;
-  font-family: monospace;
-  justify-content: space-between;
-}
-
-.player h3 {
-  position: absolute;
-  top: 3px;
-  margin: 0;
-}
-
-.player + .player {
-  border-top: 2px solid lime;
-  border-left: 2px solid lime;
-}
-
-.player h3 + div {
+.fruit-card {
   height: 300px;
-  overflow-y: scroll;
-  width: 40%;
+  width: 400px;
+  background: #fffff0;
+  box-shadow: 1px 1px 3px 1px #ccc;
+  overflow: hidden;
+  margin-top: 24px;
+  zoom: 0.7;
 }
 
-.multi .player {
-  width: 45%;
+.fruit-card.banana {
+  grid-area: f1;
+}
+.fruit-card.melon {
+  grid-area: f2;
+}
+.fruit-card.mango {
+  grid-area: f3;
+}
+.fruit-card.orange {
+  grid-area: f4;
 }
 
-.hidden {
-  display: none !important;
+[banana] {
+  left: -50%;
+  top: 25%;
+  width: 600px;
+  height: 400px;
+  transform: rotate(-45deg);
+  border-radius: 0 50% 50% 0;
+  overflow: hidden;
+  position: relative;
+}
+
+[banana]::after,
+[banana]::before {
+  content: '';
+  position: absolute;
+  background: black;
+  z-index: 2;
+}
+
+[banana]::after {
+  height: 10%;
+  width: 10%;
+  left: 70%;
+}
+
+[banana]::before {
+  height: 5%;
+  width: 3%;
+  left: 79%;
+  top: 86%;
+}
+
+[peel] {
+  border-right: 1px solid;
+  width: 420px;
+  height: 420px;
+  border-radius: 50%;
+  position: absolute;
+  left: 138px;
+  top: -10px;
+  box-shadow: inset -10px 4px 0 0 #f3ac3c, 50px 0px 0 5px #f3ac3c;
+  transform: skewX(1deg);
+}
+
+/* ---------------------- */
+/*  MELON STYLES */
+/* ---------------------- */
+[melon] {
+  left: -25%;
+  top: -75%;
+  width: 600px;
+  height: 400px;
+  transform: rotate(90deg);
+  border-radius: 0 50% 50% 0;
+  overflow: hidden;
+  position: relative;
+}
+
+[rind] {
+  border-right: 10px solid #f3f2c2;
+  width: 500px;
+  height: 720px;
+  border-radius: 50%;
+  position: absolute;
+  left: 14.5%;
+  top: -65%;
+  box-shadow: inset -10px 60px 0 80px #ff494c, 20px 18px 0 0 #0a7105, inset -10px 60px 0 81px, inset -12px 60px 0 86px #ff494c;
+}
+
+[melon]:after,
+[rind]:after,
+[melon]:before,
+[rind]:before {
+  content: '';
+  position: absolute;
+  height: 1em;
+  width: 0.25em;
+  border-radius: 50% 50% 50% 0;
+  left: 88%;
+  box-shadow: 0.5em+0+0+0,
+    1em+0+0+0,
+    1.5em+0+0+0;
+  z-index: 2;
+  background: black;
+}
+
+
+[melon]:after {
+  top: 32%;
+  transform: rotate(45deg);
+}
+
+[melon]:before {
+  top: 44%;
+  left: 94%;
+  transform: rotate(135deg);
+}
+
+[rind]:after {
+  top: 74%;
+  transform: rotate(-45deg);
+}
+
+[rind]:before {
+  top: 68%;
+  transform: rotate(-135deg);
+}
+
+
+
+/* Orange */
+
+[peeler] {
+  position: relative;
+  height: 55%;
+  width: 43%;
+  border-top-left-radius: 200%;
+  margin: 15% auto;
+  overflow: hidden;
+}
+
+[orange] {
+  width: 600px;
+  height: 300px;
+  border-radius: 50% 0 0 50%;
+  transform: rotate(-130deg);
+  border: 1px solid;
+  position: relative;
+  left: -207%;
+  top: -238px;
+  overflow: hidden;
+  box-shadow: inset 10px 10px 0 10px #f7592a;
+}
+
+/* #fde063 */
+[pith] {
+  border: 1px solid;
+  width: 500px;
+  height: 720px;
+  border-radius: 50%;
+  position: absolute;
+  left: 14.5%;
+  top: -65%;
+  box-shadow: inset 4px 4px 0 1px #fde063cc, -10px -10px 0 80px #f9f22361;
+}
+
+[orange]:after,
+[pith]:after,
+[orange]:before,
+[pith]:before {
+  content: '';
+  position: absolute;
+  height: 0;
+  width: 0;
+  border-radius: 20px;
+  z-index: 2;
+  border-top: 20px solid transparent;
+  border-bottom: 20px solid transparent;
+  border-left: 40px solid #ff9934;
+  box-shadow: -4px 0px 0 -1px #fff;
+}
+
+[orange]:after {
+  top: 160px;
+  left: 5%;
+  transform: rotate(-8deg);
+}
+
+[pith]:after {
+  top: 44%;
+  left: -12%;
+  transform: rotate(30deg);
+  border-left: 50px solid #ff9934;
+}
+
+[orange]:before {
+  top: 188px;
+  left: 9%;
+  transform: rotate(-67deg);
+  border-left: 40px solid #ff9934;
+}
+
+[pith]:before {
+  top: 40%;
+  left: -8%;
+  transform: rotate(64deg);
+  border-left: 45px solid #ff9934;
+}
+
+
+
+/* wiggle animation */
+/* Shamelessly stolen from https://codepen.io/theDeanH/pen/zBZXLN */
+
+body>.fruit-card {
+  -webkit-animation-name: wiggle;
+  -ms-animation-name: wiggle;
+  -ms-animation-duration: 1000ms;
+  -webkit-animation-duration: 1000ms;
+  -webkit-animation-iteration-count: 1;
+  animation-iteration-count: 1;
+  -ms-animation-iteration-count: 1;
+  -webkit-animation-timing-function: ease-in-out;
+  -ms-animation-timing-function: ease-in-out;
+}
+
+@-webkit-keyframes wiggle {
+  0% {
+    -webkit-transform: rotate(10deg);
+  }
+
+  25% {
+    -webkit-transform: rotate(-10deg);
+  }
+
+  50% {
+    -webkit-transform: rotate(20deg);
+  }
+
+  75% {
+    -webkit-transform: rotate(-5deg);
+  }
+
+  100% {
+    -webkit-transform: rotate(0deg);
+  }
+}
+
+@-ms-keyframes wiggle {
+  0% {
+    -ms-transform: rotate(1deg);
+  }
+
+  25% {
+    -ms-transform: rotate(-1deg);
+  }
+
+  50% {
+    -ms-transform: rotate(1.5deg);
+  }
+
+  75% {
+    -ms-transform: rotate(-5deg);
+  }
+
+  100% {
+    -ms-transform: rotate(0deg);
+  }
+}
+
+@keyframes wiggle {
+  0% {
+    transform: rotate(10deg);
+  }
+
+  25% {
+    transform: rotate(-10deg);
+  }
+
+  50% {
+    transform: rotate(20deg);
+  }
+
+  75% {
+    transform: rotate(-5deg);
+  }
+
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+
+/* MANGO stylez */
+
+
+
+[skin] {
+  transform: rotate(90deg);
+}
+
+
+[skin],
+[meat],
+[pit] {
+  height: 200px;
+  width: 200px;
+  position: relative;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+[skin] {
+  left: calc(50% - 100px);
+  top: -55%;
+}
+
+[meat] {
+  width: 150px;
+  height: 100%;
+  left: 50px;
+  box-shadow: inset -40px -4px 10px 0 #acb92fd9;
+  border-top: 1px solid;
+}
+
+[pit] {
+  height: 100px;
+  width: 75px;
+  left: -20%;
+  top: 2px;
+  border: 1px solid;
+  border-top-right-radius: 100%;
+  top: calc(100% - 100px);
+  transform: rotate(-198deg);
+  box-shadow: -20px 19px 50px 70px #ffa500ba, -140px 10px 32px 20px #c41b07bf;
+}
+
+/* #c41b07 */
+/* #acb92f */
+[mango] {
+  overflow: hidden;
+  height: 130px;
+  width: 250px;
+  position: relative;
+  border-radius: 0 40% 60% 0;
+  transform: rotate(-15deg);
+}
+
+[leaf] {
+  height: 250px;
+  width: 250px;
+  margin: 25% auto;
+  position: relative;
+}
+
+[leaf]::before,
+[leaf]::after {
+  content: '';
+  position: absolute;
+}
+
+[leaf]::before {
+  width: 2px;
+  height: 37px;
+  background: black;
+  left: 84%;
+  top: -10%;
+}
+
+[leaf]::after {
+  width: 111px;
+  height: 20px;
+  border-top: 1px solid;
+  top: -17%;
+  left: 37%;
+  border-radius: 50%;
+  transform: rotate(5deg);
+  box-shadow: inset -8px 4px 0 0 #acb92fd9, 19px -5px 0 0 #acb92fd9;
+}
+
+[meat]::after {
+  position: absolute;
+  content: '';
+  width: 20px;
+  height: 100px;
+  left: 22px;
+  top: 6px;
+  border-left: 1px solid black;
+  border-radius: 50%;
+  transform: rotate(7deg);
 }

@@ -13,21 +13,48 @@
 </head>
 
 <body>
-  <section id="leaderboard"></section>
-  <main>
-    <details>
-      <summary>Show join script</summary>
-      <div class="copy-container">
-        <input id="copy-text" type="text" value="{{ joinScriptMin }}">
-        <button data-copy-to-clipboard data-target="copy-text">Copy 📋 </button>
-        <pre><code>
-{{joinScript}}
-</code></pre>
-      </div>
-    </details>
-  </main>
-</body>
-<script src="/socket.io/socket.io.js"></script>
-<script src="/app.js"></script>
+  <div title="banana" class="fruit-card banana">
+    <div banana>
+      <div peel></div>
+    </div>
+  </div>
+  
+  <div title="melon" class="fruit-card melon">
+    <div melon>
+      <div rind></div>
+    </div>
+  </div>
 
+  <main>
+    <h3>The script below can be pasted into any cssbattle challenge page. <a href="/watch">Click here</a> to connect as a viewer</h3>
+    <hr>
+    <div class="copy-container">
+      <input id="copy-text" type="text" value="{{ joinScriptMin }}">
+      <button data-copy-to-clipboard data-target="copy-text">Copy 📋 </button>
+      <pre><code>{{joinScript}}</code></pre>
+    </div>
+  </main>
+
+  <div title="orange" class="fruit-card orange">
+    <div peeler>
+      <div orange>
+        <div pith></div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="fruit-card mango">
+    <div leaf>
+      <div mango>
+        <div skin>
+          <div meat>
+            <div pit>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+<script src="/app.js"></script>
 </html>

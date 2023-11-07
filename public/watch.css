@@ -22,7 +22,7 @@ body {
   width: 100%;
   height: calc(100% - 200px);
   display: grid;
-  grid-template-rows: repeat(9, 1fr);
+  grid-template-rows: repeat(12, 1fr);
   grid-template-areas: 'a'
     'b'
     'c'
@@ -31,7 +31,10 @@ body {
     'f'
     'g'
     'h'
-    'i';
+    'i'
+    'j'
+    'k'
+    'l';
 }
 
 score-board>[pos="1"] {
