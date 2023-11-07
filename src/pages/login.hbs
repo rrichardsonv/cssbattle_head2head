@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <style>
+    /* body{display:grid;background:#2b97ac}[s]{position:absolute;background:transparent;width:100%;height:100%;display:flex;z-index:-1;transform:matrix(0.95,-0.33,0.33,0.95,0,0)}[mast]{position:relative;height:100%;border-bottom:180px solid transparent;border-right:8px solid #525959;border-top:180px solid transparent;width:0;flex:0}[jib]{position:relative;height:230px;width:100px;margin:16px 8px 0 auto;overflow:hidden;border-radius:10px}[main]{position:relative;height:230px;width:140px;border-radius:0 0 115px 0;margin:16px 0 0 8px;overflow:hidden}[jib]:after{content:"";height:400%;width:380%;background:transparent;position:absolute;top:-285%;border-radius:50%;left:-260%;z-index:2;box-shadow:40px 40px 0 40px #eff9fa}[main]:after{content:"";height:600px;width:600px;position:absolute;top:-158px;border-radius:50%;left:-583px;z-index:2;box-shadow:0px 40px 0 200px #eff9fa}[a]{place-self:center;position:relative;width:400px;height:300px;background:transparent;border-radius:50%;overflow:hidden;box-shadow:25px 40px 0 -38px #DA991C,          inset -25px -40px 0 -37px #DA991C}[b]{position:relative;top:-200%;left:-155%;height:300%;width:300%;background:transparent;z-index:-1;box-shadow:20px 20px 0 20px #f9af20;border-radius:50%}i,i:after,i:before{content:'';background:#2b97ac;position:absolute;height:1rem;width:1rem;border-radius:50%;box-shadow:inset 1px 1px 0 #DA991C}i{overflow:visible;top:71%;left:85%; }i:after{top:85%;left:calc(87% - 2rem); }i:before{top:1.5rem;left:-2.5rem} */
+  
+    body {
+      display: grid;
+      background: #2b97ac
+    }
+  
+    [s] {
+      position: absolute;
+      background: transparent;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      z-index: -1;
+      transform: matrix(0.95, -0.33, 0.33, 0.95, 0, 0);
+    }
+  
+    [mast] {
+      position: relative;
+      height: 100%;
+      border-bottom: 180px solid transparent;
+      border-right: 8px solid #525959;
+      border-top: 180px solid transparent;
+      width: 0;
+      flex: 0;
+    }
+  
+    [jib] {
+      position: relative;
+      height: 230px;
+      width: 100px;
+      margin: 16px 8px 0 auto;
+      overflow: hidden;
+      border-radius: 10px;
+    }
+  
+    [main] {
+      position: relative;
+      height: 230px;
+      width: 140px;
+      border-radius: 0 0 115px 0;
+      margin: 16px 0 0 8px;
+      overflow: hidden;
+    }
+  
+    [jib]::after {
+      content: "";
+      height: 400%;
+      width: 380%;
+      background: transparent;
+      position: absolute;
+      top: -285%;
+      border-radius: 50%;
+      left: -260%;
+      z-index: 2;
+      box-shadow: 40px 40px 0 40px #eff9fa;
+    }
+  
+    [main]::after {
+      content: "";
+      height: 600px;
+      width: 600px;
+      position: absolute;
+      top: -158px;
+      border-radius: 50%;
+      left: -583px;
+      z-index: 2;
+      box-shadow: 0px 40px 0 200px #eff9fa;
+    }
+  
+    [a] {
+      place-self: center;
+      position: relative;
+      width: 400px;
+      height: 300px;
+      background: transparent;
+      border-radius: 50%;
+      overflow: hidden;
+      box-shadow:
+        25px 40px 0 -38px #DA991C, inset -25px -40px 0 -37px #DA991C;
+    }
+  
+    [b] {
+      position: relative;
+      top: -200%;
+      left: -155%;
+      height: 300%;
+      width: 300%;
+      background: transparent;
+      z-index: -1;
+      box-shadow: 20px 20px 0 20px #f9af20;
+      border-radius: 50%;
+    }
+  
+    i,
+    i::after,
+    i::before {
+      content: '';
+      background: #2b97ac;
+      position: absolute;
+      height: 1rem;
+      width: 1rem;
+      border-radius: 50%;
+      box-shadow: inset 1px 1px 0 #DA991C;
+    }
+  
+    i {
+      overflow: visible;
+      top: 71%;
+      left: 85%;
+    }
+  
+    i::after {
+      top: 85%;
+      left: calc(87% - 2rem);
+    }
+  
+    i::before {
+      top: 1.5rem;
+      left: -2.5rem
+    }
+  </style>
+  <div a>
+    <div s>
+      <div jib>
+      </div>
+      <div mast></div>
+      <div main>
+      </div>
+    </div>
+    <div b></div>
+    <i></i>
+  </div>
+  <form id="username-form" action="/join" method="GET">
+    <input id="username" type="text" name="username" list="slackUsers" placeholder="Slack username" />
+    <datalist id="slackUsers">
+      <option value="Abdul Qavi">Abdul Qavi</option>
+      <option value="Adam Kerasotes">Adam Kerasotes</option>
+      <option value="Adam Urteaga">Adam Urteaga</option>
+      <option value="Addhyan Pandey">Addhyan Pandey</option>
+      <option value="Adithya Reddy">Adithya Reddy</option>
+      <option value="Al Bayer">Al Bayer</option>
+      <option value="Aleksandra Bondzic">Aleksandra Bondzic</option>
+      <option value="Alessandro Clivio">Alessandro Clivio</option>
+      <option value="Alex Miyamura">Alex Miyamura</option>
+      <option value="Alexander Gilfillan">Alexander Gilfillan</option>
+      <option value="Amanda Parnell">Amanda Parnell</option>
+      <option value="Amanda Sestito">Amanda Sestito</option>
+      <option value="Amit Rajoriya">Amit Rajoriya</option>
+      <option value="Amy Carrillo">Amy Carrillo</option>
+      <option value="Amy Kakalec">Amy Kakalec</option>
+      <option value="Ana Caballero">Ana Caballero</option>
+      <option value="Anatoliy Adamitskiy">Anatoliy Adamitskiy</option>
+      <option value="Andy Cao">Andy Cao</option>
+      <option value="Angel Jose">Angel Jose</option>
+      <option value="Angelo Luna">Angelo Luna</option>
+      <option value="Ann-Marie Lilley">Ann-Marie Lilley</option>
+      <option value="Anum Siddiqui">Anum Siddiqui</option>
+      <option value="Ashima Shrivastava">Ashima Shrivastava</option>
+      <option value="Austin Bentley">Austin Bentley</option>
+      <option value="Austin Kregel">Austin Kregel</option>
+      <option value="Avron Manwah">Avron Manwah</option>
+      <option value="Brad Walker">Brad Walker</option>
+      <option value="Bradley Brown">Bradley Brown</option>
+      <option value="Brenton Bairhalter">Brenton Bairhalter</option>
+      <option value="Brett Lee">Brett Lee</option>
+      <option value="Brian Sung">Brian Sung</option>
+      <option value="Bruce Zawadzki">Bruce Zawadzki</option>
+      <option value="Bryan McTague">Bryan McTague</option>
+      <option value="Buddy Lo">Buddy Lo</option>
+      <option value="Caio Ingber">Caio Ingber</option>
+      <option value="Celia Wang">Celia Wang</option>
+      <option value="Chris Colburn">Chris Colburn</option>
+      <option value="Chris Howie">Chris Howie</option>
+      <option value="Christian Koch">Christian Koch</option>
+      <option value="Clint Thurman">Clint Thurman</option>
+      <option value="Colin Campbell">Colin Campbell</option>
+      <option value="Courtney Simpsen">Courtney Simpsen</option>
+      <option value="Dairon Medina Caro">Dairon Medina Caro</option>
+      <option value="Dana Morrow">Dana Morrow</option>
+      <option value="Daniel Mackey">Daniel Mackey</option>
+      <option value="Danish Jawa">Danish Jawa</option>
+      <option value="Darnell Holmes">Darnell Holmes</option>
+      <option value="Darren Coombes">Darren Coombes</option>
+      <option value="David Chun">David Chun</option>
+      <option value="David Greene">David Greene</option>
+      <option value="David Mosher">David Mosher</option>
+      <option value="Dayton Nolan">Dayton Nolan</option>
+      <option value="Dennis Sherman">Dennis Sherman</option>
+      <option value="Dennis Small">Dennis Small</option>
+      <option value="Derrick Fulkerson">Derrick Fulkerson</option>
+      <option value="Diana Masterson">Diana Masterson</option>
+      <option value="Doug VonMoser">Doug VonMoser</option>
+      <option value="Ed Quick">Ed Quick</option>
+      <option value="Elayne Juten">Elayne Juten</option>
+      <option value="Elizabeth Dixon">Elizabeth Dixon</option>
+      <option value="Elvira Barrientos">Elvira Barrientos</option>
+      <option value="Emma Anderson">Emma Anderson</option>
+      <option value="Eph Baum">Eph Baum</option>
+      <option value="Eric Iacutone">Eric Iacutone</option>
+      <option value="Eric Thiele">Eric Thiele</option>
+      <option value="Erin Kennedy">Erin Kennedy</option>
+      <option value="Ethan Gunderson">Ethan Gunderson</option>
+      <option value="Ezra Oh">Ezra Oh</option>
+      <option value="Florent Buisson">Florent Buisson</option>
+      <option value="Gabriel Mascarenhas">Gabriel Mascarenhas</option>
+      <option value="Gray Zhen">Gray Zhen</option>
+      <option value="Greg Heidorn">Greg Heidorn</option>
+      <option value="Harshitha Sanikommu">Harshitha Sanikommu</option>
+      <option value="Heather Popek">Heather Popek</option>
+      <option value="Houa Yang">Houa Yang</option>
+      <option value="Jake Sellers">Jake Sellers</option>
+      <option value="James Saxon">James Saxon</option>
+      <option value="Jared Hamby">Jared Hamby</option>
+      <option value="Jason Sisk">Jason Sisk</option>
+      <option value="Jason Tavenner">Jason Tavenner</option>
+      <option value="Jason Tezanos">Jason Tezanos</option>
+      <option value="Jaya Vootukuru">Jaya Vootukuru</option>
+      <option value="Jayden Sung">Jayden Sung</option>
+      <option value="Jeff Olen">Jeff Olen</option>
+      <option value="Jeff Puckett">Jeff Puckett</option>
+      <option value="Jeremy Jacocks">Jeremy Jacocks</option>
+      <option value="Jeremy Searls">Jeremy Searls</option>
+      <option value="Jerome Plouhar">Jerome Plouhar</option>
+      <option value="Jim Kultgen">Jim Kultgen</option>
+      <option value="Jipara Esengulova">Jipara Esengulova</option>
+      <option value="Joao Moreira">Joao Moreira</option>
+      <option value="John Kao">John Kao</option>
+      <option value="John Matthews">John Matthews</option>
+      <option value="John Nenninger">John Nenninger</option>
+      <option value="Jonathan Delgado">Jonathan Delgado</option>
+      <option value="Jonathan Manahan">Jonathan Manahan</option>
+      <option value="Jose Canas">Jose Canas</option>
+      <option value="Joseph Stevens">Joseph Stevens</option>
+      <option value="Josh Illian">Josh Illian</option>
+      <option value="Josh Thomas">Josh Thomas</option>
+      <option value="Jourdan Brocks">Jourdan Brocks</option>
+      <option value="Kaye McLean">Kaye McLean</option>
+      <option value="Kevin Altman">Kevin Altman</option>
+      <option value="Kevin Dilts">Kevin Dilts</option>
+      <option value="Kevin Zolkiewicz">Kevin Zolkiewicz</option>
+      <option value="Kiran Vajja">Kiran Vajja</option>
+      <option value="Kristen Johansen">Kristen Johansen</option>
+      <option value="Kyle Dieruf">Kyle Dieruf</option>
+      <option value="Kyle Hamwey">Kyle Hamwey</option>
+      <option value="Kyle Johnson">Kyle Johnson</option>
+      <option value="Laith Namou">Laith Namou</option>
+      <option value="Laura Brokans">Laura Brokans</option>
+      <option value="Laura Cordoba">Laura Cordoba</option>
+      <option value="Laurent Canup">Laurent Canup</option>
+      <option value="Lee Hyer">Lee Hyer</option>
+      <option value="Lee Page">Lee Page</option>
+      <option value="Lisa Reinwald">Lisa Reinwald</option>
+      <option value="Loren Baca">Loren Baca</option>
+      <option value="Luciaan Queen">Luciaan Queen</option>
+      <option value="Luna Rajbhandari">Luna Rajbhandari</option>
+      <option value="Mario Lo">Mario Lo</option>
+      <option value="Matias Gutierrez">Matias Gutierrez</option>
+      <option value="Matt Versweyveld">Matt Versweyveld</option>
+      <option value="Matthew Crawford">Matthew Crawford</option>
+      <option value="Matthew Williams">Matthew Williams</option>
+      <option value="Meghan Mueller-Cox">Meghan Mueller-Cox</option>
+      <option value="Mic Magracia">Mic Magracia</option>
+      <option value="Michael Dewey">Michael Dewey</option>
+      <option value="Michael Rock">Michael Rock</option>
+      <option value="Michael Ryabushkin">Michael Ryabushkin</option>
+      <option value="Mike Joyce">Mike Joyce</option>
+      <option value="Mindy Johnson">Mindy Johnson</option>
+      <option value="Miona Lee">Miona Lee</option>
+      <option value="Namrata Kumar">Namrata Kumar</option>
+      <option value="Nicholas Stalter">Nicholas Stalter</option>
+      <option value="Nick Griffith">Nick Griffith</option>
+      <option value="Nikhil Patel">Nikhil Patel</option>
+      <option value="Oscar Castro">Oscar Castro</option>
+      <option value="Pat Andrade">Pat Andrade</option>
+      <option value="Pedro Rebollar">Pedro Rebollar</option>
+      <option value="Peter Hoang">Peter Hoang</option>
+      <option value="Puru Hemnani">Puru Hemnani</option>
+      <option value="Pyro Chanhnourack">Pyro Chanhnourack</option>
+      <option value="Ranga Sai">Ranga Sai</option>
+      <option value="Rich Richardson">Rich Richardson(you)</option>
+      <option value="Richard Bouchard">Richard Bouchard</option>
+      <option value="Richard O'Connell">Richard O'Connell</option>
+      <option value="Robert Giles">Robert Giles</option>
+      <option value="Robert Spidle">Robert Spidle</option>
+      <option value="Rod Dennis">Rod Dennis</option>
+      <option value="Rohit Koliyatt">Rohit Koliyatt</option>
+      <option value="Roman Krichevsky">Roman Krichevsky</option>
+      <option value="Ross Geesman">Ross Geesman</option>
+      <option value="Ross Young">Ross Young</option>
+      <option value="Ryan Casey">Ryan Casey</option>
+      <option value="Ryan Hansen">Ryan Hansen</option>
+      <option value="Ryan Olson">Ryan Olson</option>
+      <option value="Sanjay Dasari">Sanjay Dasari</option>
+      <option value="Sarah Stroh">Sarah Stroh</option>
+      <option value="Scott Holleman">Scott Holleman</option>
+      <option value="Sean Brown">Sean Brown</option>
+      <option value="Shareef Yousef">Shareef Yousef</option>
+      <option value="Sharla Koob">Sharla Koob</option>
+      <option value="Shawn Nguyen">Shawn Nguyen</option>
+      <option value="Simon Dircks">Simon Dircks</option>
+      <option value="Stella Camacho">Stella Camacho</option>
+      <option value="Stephanie Lane">Stephanie Lane</option>
+      <option value="Stephen Neweissman">Stephen Neweissman</option>
+      <option value="Stephen Newkirk">Stephen Newkirk</option>
+      <option value="Stephen Wright">Stephen Wright</option>
+      <option value="Stetson Pierce">Stetson Pierce</option>
+      <option value="Stone Chen">Stone Chen</option>
+      <option value="Sundi Myint">Sundi Myint</option>
+      <option value="Susan Jacob">Susan Jacob</option>
+      <option value="Tim Jordan">Tim Jordan</option>
+      <option value="Tony Simone">Tony Simone</option>
+      <option value="Tyler Johnson">Tyler Johnson</option>
+      <option value="Vijay Yaraballi">Vijay Yaraballi</option>
+      <option value="Vlad Filippov">Vlad Filippov</option>
+      <option value="Zach Pfeiffer">Zach Pfeiffer</option>
+      <option value="Zachery Moneypenny">Zachery Moneypenny</option>
+      <option value="Zack Kayser">Zack Kayser</option>
+    </datalist>
+    <button type="submit">Submit</button>
+  </form>
+</body>
+</html>

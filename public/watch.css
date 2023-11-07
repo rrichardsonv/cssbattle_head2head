@@ -1,0 +1,91 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.page-container {
+  display: grid;
+  grid-template-columns: 375px auto;
+  height: 100vh;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.sidebar {
+  background: #060606;
+  box-shadow: 3px+0#34363e;
+  height: 100%;
+}
+
+.sidebar score-board {
+  width: 100%;
+  height: calc(100% - 200px);
+  display: grid;
+  grid-template-rows: repeat(9, 1fr);
+  grid-template-areas: 'a'
+    'b'
+    'c'
+    'd'
+    'e'
+    'f'
+    'g'
+    'h'
+    'i';
+}
+
+score-board>[pos="1"] {
+  grid-area: a;
+}
+
+score-board>[pos="2"] {
+  grid-area: b;
+}
+
+score-board>[pos="3"] {
+  grid-area: c;
+}
+
+score-board>[pos="4"] {
+  grid-area: d;
+}
+
+score-board>[pos="5"] {
+  grid-area: e;
+}
+
+score-board>[pos="6"] {
+  grid-area: f;
+}
+
+score-board>[pos="7"] {
+  grid-area: g;
+}
+
+score-board>[pos="8"] {
+  grid-area: h;
+}
+
+score-board>[pos="9"] {
+  grid-area: i;
+}
+
+.content {
+  background: #1d1e22;
+  height: calc(100% - 64px);
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  grid-template-rows: repeat(3, 1fr);
+  padding: 32px;
+}
+
+preview-box:not(:defined) {
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  z-index: 1;
+  mix-blend-mode: normal;
+  opacity: 1;
+  transition: all 0.3s ease 0s;
+}

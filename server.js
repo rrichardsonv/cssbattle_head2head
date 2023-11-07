@@ -40,6 +40,30 @@ fastify.get('/', function(request, reply) {
   reply.view('/src/pages/index.hbs', params);
 });
 
+
+fastify.get('/login', function(request, reply) {
+  // request.query.paramName <-- a querystring example
+  reply.view('/src/pages/login.hbs', {});
+});
+
+fastify.get('/join', function(request, reply) {
+  console.log(request);
+  // request.query.paramName <-- a querystring example
+  const joinScript = buildJoinScript(process.env.URL || 'http://localhost:3000', request.query.username);
+  let params = {
+    joinScript,
+    joinScriptMin: joinScript.replace(/\n\s+/g, ' ')
+  };
+  reply.view('/src/pages/join.hbs', params);
+});
+
+fastify.get('/watch', function(request, reply) {
+  // request.query.paramName <-- a querystring example
+  reply.view('/src/pages/watch.hbs', {});
+});
+
+
+
 fastify.post('/event', function (request, reply) {
   fastify.io.emit('change', request.body);
 
@@ -84,8 +108,11 @@ fastify.listen(3000, function(err, address) {
 });
 
 
-function buildJoinScript (serverUrl) {
+function buildJoinScript (serverUrl, uname = "") {
+  const username = uname ?? "";
   return `(() => {
+    const username = "${username}";
+
     function quickH (obj) {
       return ((str, hash = 5381, i = null) => {
         while (i ??= str.length) {
@@ -97,11 +124,16 @@ function buildJoinScript (serverUrl) {
 
     let
       lastHash = -1,
-      debug = false;
+      debug = false,
+      name = "";
 
-    const
-      name = prompt('Enter your name to connect'),
-      editor = document.querySelector('.react-codemirror2');
+    if (username !== "") {
+      name = username;
+    } else {
+      name = prompt('Enter your name to connect');
+    }
+
+    const editor = document.querySelector('.cm-editor .cm-content');
     
     function req (payload) {
       return {

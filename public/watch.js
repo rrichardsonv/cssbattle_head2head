@@ -1,26 +1,453 @@
+class EzElement extends HTMLElement {
+  shadow = null;
+
+  get stylez () {
+    return `:host {display: block}`;
+  }
+
+  constructor () {
+    super();
+    this.shadow = this.attachShadow({ mode: 'open' });
+  }
+
+  static get observedAttributes () {
+    return [];
+  }
+
+  attributeChangedCallback(name, _oldValue, newValue) {
+    this[name] = newValue;
+    this.update();
+  }
+
+  connectedCallback () {
+    this.update();
+  }
+
+  update () {
+    const nextRender = this.render();
+    if (nextRender) {
+      this.shadow.innerHTML = nextRender;
+    }
+    const style = document.createElement('style');
+    style.textContent = this.stylez;
+    this.shadow.appendChild(style);
+  }
+
+  render () { return null; }
+}
+
+let id = 0;
+
+class PreviewBox extends EzElement {
+  frame;
+  renderedDoc;
+
+  get stylez () {
+    return `
+    :host {
+      display: flex;
+      justify-content: center;
+      align-content: center;
+      overflow: hidden;
+      width: 100%;
+      height: 100%;
+      position: relative;
+      z-index: 1;
+      mix-blend-mode: normal;
+      opacity: 1;
+      transition: all 0.3s ease 0s;
+    }
+
+    :host .username,
+    :host .avatar {
+      position: absolute;
+      z-index: 2;
+    }
+
+    :host .avatar {
+      border-radius: 50%;
+      box-shadow:0+0+0+3px#34363e;
+      top: 0;
+      left:calc(calc(50% - 24px) + 190px);
+    }
+
+    :host .username {
+      top: 0;
+      right: 60%;
+      background: #060606;
+      color: white;
+      padding:2px 4px;
+      opacity: 0.6;
+    }
+    `;
+  }
+
+  static get observedAttributes () {
+    return ['doc', 'username', 'avatar'];
+  }
+
+  update () {
+    super.update();
+
+    if (!this.frame) {
+      this.frame = document.createElement('iframe');
+      this.frame.style = "background: white; width: 400px; height: 300px; border: 0px; outline: 0px; pointer-events: none;";
+      this.frame.id = `preview-iframe-${++id}`;
+      this.appendChild(this.frame);
+    }
+
+
+    if (this.doc !== this.renderedDoc) {
+      this.renderedDoc = this.doc;
+      this.frame.contentDocument.write(this.doc.replace(/^\s+/gm, '').replace(/\s+$/, ''));
+      this.frame.contentWindow.document.close();
+    }
+  }
+  
+  render () {
+    return `
+    <span class="username">${this.username}</span>
+    <img class="avatar" src="${this.avatar}" />
+    <slot></slot>
+    `;
+  }
+}
+
+if (!customElements.get('preview-box')) {
+  customElements.define('preview-box', PreviewBox);  
+}
+
+
+class ScoreLine extends EzElement {
+  get stylez () {
+    return `
+    :host {
+  height: 32px;
+  font-size: 20px;
+  display: flex;
+  overflow: hidden;
+  padding: 0 4px;
+  font-family: monospace;
+  color: lime;
+  box-shadow: inset 0 0 0 1px lime;
+}
+:host .position {
+  width: 30px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+:host .avatar {
+  overflow: hidden;
+  position: relative;
+  margin: 2px 0;
+  top: -1px;
+  width: 48px;
+  height: 30px;
+  box-shadow: -2px 0 lime;
+}
+
+:host img {
+  height: 48px;
+  position: absolute;
+  top: -8px;
+}
+:host .name {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+}
+
+:host .score {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+}
+    `;
+  }
+  
+  static get observedAttributes () {
+    return ['pos', 'username', 'avatar', 'score'];
+  }
+  
+  getScore () {
+    return this.score ? parseInt(this.score) : -1;
+  }
+  
+  render () {
+    return `
+        <div class="position">${this.pos}</div>
+        <div class="avatar"><img src="${this.avatar}" /></div>
+        <div class="name">${this.username}</div>
+        <div class="score">${this.score}</div>
+    `;
+  }
+}
+
+if (!customElements.get('score-line')) {
+  customElements.define('score-line', ScoreLine);  
+}
+
+class ScoreBoard extends EzElement {
+  get stylez () {
+    return `
+    :host {
+      width: 100%;
+      height: calc(100% - 200px);
+      display: inline-block;
+    }
+    `;
+  }
+  
+  players = [];
+  
+  updateScore (player) {
+    const { id: identity, score } = player;
+    const [,el] = this.players.find(([i]) => i === identity) ?? [null, null];
+
+    if (!el) {
+      this.addPlayer(player);
+    } else {
+      el.score = score;
+      this.updateLines();
+    }
+  }
+  
+  addPlayer ({ id, avatar, username, score }) {
+    const el = document.createElement('score-line');
+    el.avatar = avatar;
+    el.username = username;
+    el.score = score;
+    el.pos = "-"
+    this.appendChild(el);
+    this.players.push([id, el]);
+    this.updateLines();
+  }
+  
+  updateLines () {
+    let nextPlayers;
+    if (this.players.length > 1) {
+      nextPlayers = [...this.players].sort(([,a], [,b]) => {
+        if (a.getScore() > b.getScore()) return 1;
+        if (a.getScore() < b.getScore()) return -1;
+        return 0;
+      });
+    } else {
+      nextPlayers = this.players;
+    }
+    
+    
+    this.players = nextPlayers.map(([id, el], i) => {
+      el.setAttribute("pos", `${i+1}`);
+      return [id, el];
+    });
+  }
+
+  render () {
+    return `<slot></slot>`;
+  }
+}
+
+if (!customElements.get('score-board')) {
+  customElements.define('score-board', ScoreBoard);  
+}
+
+class RoundTimer extends EzElement {  
+  get stylez () {
+    return `
+    :host {
+      display: flex;
+      width: 100%;
+      height: 160px;
+      font-family: monospace;
+    }
+    
+    :host button {
+      flex: 0 0 80px;
+      font-size: 20px;
+    }
+    :host .time {
+      flex: 1;
+      display: inline-flex;
+      justify-content: center;
+      text-align:center;
+      color: magenta;
+      flex-direction: column;
+      padding: 0 8px;
+    }
+    
+    .mid {
+      color: yellow;
+    }
+
+    .low {
+      color: red;
+    }
+
+    :host .display {
+     font-size: 48px;
+    }
+    
+    `;
+  }
+  updateDisplay (v) {
+    this.shadow.querySelector("#time-display").innerText= this.calcDisplayTime(v);
+  }
+  update () {
+    super.update();
+    const input = this.shadow.querySelector("#time");
+    this.updateDisplay(parseInt(input.value));
+
+    input.addEventListener("change", (ev) => {
+      this.updateDisplay(parseInt(ev.target.value));
+    });
+    
+    const button = this.shadow.querySelector("#go");
+    button.addEventListener("click", (ev) => {
+      ev.preventDefault();
+      this.startTimer(button, input);
+    })
+  }
+  
+  calcDisplayTime (time) {
+    const minutes = Math.floor(time / 60);
+    const seconds = time - minutes * 60;
+    return `${minutes}:${seconds > 9 ? seconds : "0"+seconds}`;
+  }
+  
+  startTimer (button, input) {
+    let count = parseInt(input.value);
+    const midCount = count * 0.4;
+    const lowCount = count * 0.2;
+    button.setAttribute('disabled', "");
+    input.setAttribute('disabled', "");
+    input.classList.add('hidden');
+    const timedisplay = this.shadow.querySelector("#time-display");
+    let level = 0;
+    
+    this.timer = setInterval(() => {
+      count--;
+      if (count < 1) {
+        clearInterval(this.timer);
+        timedisplay.classList.remove("low");
+        button.removeAttribute('disabled');
+        input.removeAttribute('disabled');
+        input.classList.toggle('hidden');
+        this.shadow.querySelector("#time-display").innerText="DONE!";
+      } else {
+        this.updateDisplay(count);
+
+        if (level === 1 && count < lowCount) {
+          timedisplay.classList.remove('mid');
+          timedisplay.classList.add('low');
+          level++;
+        } else if (level === 0 && count < midCount) {
+          timedisplay.classList.add('mid');
+          level++;
+        }
+      }
+    }, 1000);
+  }
+  
+  maybeUpdateStyles (count, mid, low) {
+    if (count < low) {
+      this.classList.add('low');
+      return;
+    }
+
+    if (count < mid) {
+      this.classList.add('mid');
+      return;
+    }
+
+    return;
+  }
+
+  render () {
+    return `
+      <div class="time">
+      <div id="time-display" class="display"></div>
+      <input type="range" id="time" name="time" list="markers" min="0" max="1500" step="60" />
+     </div>
+      <button id="go">GO!</button>
+    `;
+  }
+}
+
+if (!customElements.get('round-timer')) {
+  customElements.define('round-timer', RoundTimer);  
+}
+
+class PreviewPlayer {
+  url;
+  id;
+  name;
+
+  constructor ({ name, id }, main) {
+    this.url = getAvatarUrl(name);
+    this.id = id;
+    this.name = name;
+    this.el = document.createElement("preview-box");
+    this.el.username = this.name;
+    this.el.avatar = this.url;
+    this.el.doc = "";
+    this.el.id = id;
+    main.appendChild(this.el);
+  }
+
+  update ({ text }) {
+    this.el.setAttribute("doc", text);
+  }
+}
+
+class ScorePlayer {
+  url;
+  id;
+  name;
+  score;
+  main;
+
+  constructor ({ name, id }, main) {
+    this.url = getAvatarUrl(name);
+    this.id = id;
+    this.name = name;
+    this.main = main;
+  }
+
+  update ({ text }) {
+    this.score = text.length;
+    this.main.updateScore({
+      id: this.id,
+      username: this.name,
+      avatar: this.url,
+      score: this.score
+    });
+  }
+}
+
+
+
 class App {
   constructor () {
     // state
     this.players = {};
     this.lbp = {};
-    this.main = document.querySelector('main');
-    this.leaderBoard = document.querySelector('#leaderboard');
+    this.main = document.getElementById('preview-container');
+    this.leaderBoard = document.getElementById('score-container');
+    // this.leaderBoard = document.querySelector('#leaderboard');
 
     // Network handlers
     this.socket = new Socket();
     this.socket.addListener(this.upsertPlayer.bind(this));
     this.socket.addListener(this.upsertLeaderboard.bind(this));
-    this.socket.addListener(this.reorderLeaderboard.bind(this));
-    this.socket.addListener(this.updateSplitScreen.bind(this));
+    // this.socket.addListener(this.reorderLeaderboard.bind(this));
+    // this.socket.addListener(this.updateSplitScreen.bind(this));
 
     // UI events
-    this.bindCopyButton();
-  }
-
-  toggleCode () {
-    Object.keys(this.players).forEach(n => {
-      this.players[n].toggleSyntax()
-    })
+    // this.bindCopyButton();
   }
 
   upsertPlayer(p) {
@@ -36,45 +463,6 @@ class App {
     this.lbp[name] ??= new ScorePlayer(p, this.leaderBoard);
     this.lbp[name].update(p);
     return p;
-  }
-
-  reorderLeaderboard(unused) {
-    const rankedPlayers =
-      Object.keys(this.lbp).sort((a, b) =>
-        (this.lbp[a].count > this.lbp[b].count) ? 1 : (this.lbp[a].count > this.lbp[b].count) ? -1 : 0
-      ).map((k) => {
-        this.lbp[k].prepare();
-        return this.lbp[k];
-      });
-  
-    this.leaderBoard.innerHTML = '';
-    
-    rankedPlayers.forEach(p => {
-      p.rerender(this.leaderBoard);
-    });
-
-    return unused;
-  }
-  
-  updateSplitScreen(unused) {
-    if (Object.keys(this.players).length > 3) {
-      this.main.classList.add('multi');
-    }
-    return unused;
-  }
-
-  bindCopyButton () {
-    const copyButtons = document.querySelectorAll("[data-copy-to-clipboard]");
-    if (copyButtons && copyButtons.length) {
-      copyButtons.forEach((btn) =>
-        btn.addEventListener("click", function (e) {
-          e.preventDefault();
-          const copyText = document.getElementById(btn.dataset.target);
-
-          document.execCommand("copy", false, copyText.select());
-        }),
-      );
-    }
   }
 }
 
@@ -107,67 +495,6 @@ class Socket {
       id: name.replace(/\s/, '-'),
       text: text.replace(/^\s*1\n/, '').replace(/(\S)\n\d+\n/g, '$1\n')
     };
-  }
-}
-
-class PreviewPlayer {
-  url;
-  constructor ({ name, id }, main) {
-    this.url = getAvatarUrl(name);
-    const el = document.createElement('div');
-    el.id = id;
-    el.classList.add('player');
-    el.innerHTML = `
-      <h3>${name}</h3>
-      <img src=${this.url} />
-      <div id="syntax" class="hidden">
-        <code>
-          <pre class="syntax"></pre>
-        </code>
-      </div>
-      <iframe
-        title="Preview"
-        width="400"
-        height="300"
-        class="preview"
-        style=background:white;border:0;outline:0
-      ></iframe>
-    `;
-    this.el = el;
-    this.preview = el.querySelector('.preview');
-    this.pre = el.querySelector('.syntax');
-
-    main.appendChild(this.el);
-  }
-
-  update ({ text }) {
-    this.pre.innerText = text;
-    this.preview.contentDocument.write(text.replace(/^\s+/gm, '').replace(/\s+$/, ''))
-    this.preview.contentWindow.document.close();
-  }
-
-  toggleSyntax () {
-    this.el.getElementById('syntax').classList.toggle('hidden');
-  }
-}
-
-class ScorePlayer {
-  constructor ({ id, text }, leaderBoard) {
-    const el = document.createElement('p');
-    el.id = 'leaderboard-'+id;
-    this.el = el;
-    this.count = text.length;
-    leaderBoard.appendChild(this.el);
-  }
-  prepare () {
-    this.el = this.el.cloneNode(true);
-  }
-  rerender (leaderBoard) {
-    leaderBoard.appendChild(this.el);
-  }
-  update ({ name, text }) {
-    this.count = text.length;
-    this.el.innerText = `${name} - ${text.length}`;
   }
 }
 

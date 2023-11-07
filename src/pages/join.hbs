@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <link rel="icon" href="https://glitch.com/favicon.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Css head2head</title>
+
+  <!-- import the webpage's stylesheet -->
+  <link rel="stylesheet" href="/style.css" />
+</head>
+
+<body>
+  <section id="leaderboard"></section>
+  <main>
+    <details>
+      <summary>Show join script</summary>
+      <div class="copy-container">
+        <input id="copy-text" type="text" value="{{ joinScriptMin }}">
+        <button data-copy-to-clipboard data-target="copy-text">Copy 📋 </button>
+        <pre><code>
+{{joinScript}}
+</code></pre>
+      </div>
+    </details>
+  </main>
+</body>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/app.js"></script>
+
+</html>

@@ -15,9 +15,6 @@
     "point-of-view": "^5.2.0",
     "socket.io": "^4.4.1"
   },
-  "engines": {
-    "node": "12.x"
-  },
   "repository": {
     "url": "https://glitch.com/edit/#!/glitch-mvp-node"
   },
