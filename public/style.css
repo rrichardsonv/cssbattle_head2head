@@ -11,6 +11,20 @@ body {
   place-items: center;
 }
 
+.floating-header {
+  width: 300px;
+  position: fixed;
+  top: 0;
+  left: calc(50% - 150px);
+  color: white;
+  background: #0a7105;
+  opacity: 0.7;
+}
+
+.hidden {
+  display: none !important;
+}
+
 main {
   margin-top: 100px;
   padding: 0 16px;

@@ -170,11 +170,19 @@ class ScoreLine extends EzElement {
   }
   
   static get observedAttributes () {
-    return ['pos', 'username', 'avatar', 'score'];
+    return ['pos', 'username', 'avatar', 'score', 'submittedscore', 'percent'];
   }
   
   getScore () {
     return this.score ? parseInt(this.score) : -1;
+  }
+
+  renderScore () {
+    if (this.submittedScore !== null) {
+      return `<div class="score">${this.score}</div>`
+    } else {
+      return `<div class="score">${this.submittedScore}(${this.percent})</div>`
+    }
   }
   
   render () {
@@ -182,7 +190,7 @@ class ScoreLine extends EzElement {
         <div class="position">${this.pos}</div>
         <div class="avatar"><img src="${this.avatar}" /></div>
         <div class="name">${this.username}</div>
-        <div class="score">${this.score}</div>
+        ${this.renderScore()}
     `;
   }
 }
@@ -212,6 +220,8 @@ class ScoreBoard extends EzElement {
       this.addPlayer(player);
     } else {
       el.score = score;
+      el.submittedscore = player?.submittedScore ?? null;
+      el.percent = player?.percent ?? null;
       this.updateLines();
     }
   }
@@ -409,6 +419,8 @@ class ScorePlayer {
   name;
   score;
   main;
+  submittedScore;
+  percent;
 
   constructor ({ name, id }, main) {
     this.url = getAvatarUrl(name);
@@ -417,14 +429,29 @@ class ScorePlayer {
     this.main = main;
   }
 
-  update ({ text }) {
-    this.score = text.length;
-    this.main.updateScore({
+  update (data) {
+    if (!data?.submittedScore) {
+      const { text } = data;
+      this.score = text.length;
+    } else {
+      this.submittedScore = data?.submittedScore;
+      this.percent = data?.percent;
+    }
+
+    this.main.updateScore(
+      this.serialize()
+    );
+  }
+
+  serialize () {
+    return {
       id: this.id,
       username: this.name,
       avatar: this.url,
-      score: this.score
-    });
+      score: this.score,
+      submittedScore: this.submittedScore,
+      percent: this.percent,
+    }
   }
 }
 
@@ -443,6 +470,7 @@ class App {
     this.socket = new Socket();
     this.socket.addListener(this.upsertPlayer.bind(this));
     this.socket.addListener(this.upsertLeaderboard.bind(this));
+    this.challengeId = new URLSearchParams(window.location.search).get("challenge");
     // this.socket.addListener(this.reorderLeaderboard.bind(this));
     // this.socket.addListener(this.updateSplitScreen.bind(this));
 
@@ -451,18 +479,28 @@ class App {
   }
 
   upsertPlayer(p) {
-    const { name } = p;
-    this.players[name] ??= new PreviewPlayer(p, this.main);
-    this.players[name].update(p);
-    return p;
+    if (this.shouldAllow(p?.challengeId)) {
+      const { name } = p;
+      this.players[name] ??= new PreviewPlayer(p, this.main);
+      this.players[name].update(p);
+      return p;
+    }
   }
 
   upsertLeaderboard(p) {
-    const {name} = p;
-    
-    this.lbp[name] ??= new ScorePlayer(p, this.leaderBoard);
-    this.lbp[name].update(p);
-    return p;
+    if (this.shouldAllow(p?.challengeId)) {
+      const {name} = p;
+      
+      this.lbp[name] ??= new ScorePlayer(p, this.leaderBoard);
+      this.lbp[name].update(p);
+      return p;
+    }
+  }
+
+  shouldAllow (challengeId) {
+    if (!this.challengeId || !challengeId) return true;
+
+    return this.challengeId === challengeId;
   }
 }
 
@@ -470,7 +508,9 @@ class Socket {
   constructor () {
     this.socket = io();
     this.socket.on('change', this.handleChange.bind(this));
+    this.socket.on('score', this.handleScore.bind(this))
     this.listeners = [];
+    this.scoreListeners = [];
   }
 
   addListener (cb) {
@@ -485,8 +525,25 @@ class Socket {
     )(payload);
   }
 
+  handleScore (payload) {
+    pipe(
+      this.parsePayload,
+      this.cleanScorePayload,
+      ...this.scoreListeners,
+    )(payload);
+  }
+
   parsePayload(payload) {
     return JSON.parse(payload)
+  }
+
+  cleanScorePayload({name, score, percent}) {
+    return {
+      name,
+      id: name.replace(/\s/, '-'),
+      submittedScore: parseFloat(score),
+      percent,
+    }
   }
 
   cleanPayload({ name, text }) {

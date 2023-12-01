@@ -47,7 +47,6 @@ fastify.get('/login', function(request, reply) {
 });
 
 fastify.get('/join', function(request, reply) {
-  console.log(request);
   // request.query.paramName <-- a querystring example
   const joinScript = buildJoinScript(process.env.URL || 'http://localhost:3000', request.query.username);
   let params = {
@@ -59,13 +58,19 @@ fastify.get('/join', function(request, reply) {
 
 fastify.get('/watch', function(request, reply) {
   // request.query.paramName <-- a querystring example
-  reply.view('/src/pages/watch.hbs', {});
+  reply.view('/src/pages/watch.hbs', {challengeN: request.query.challenge || null });
 });
 
 
 
 fastify.post('/event', function (request, reply) {
   fastify.io.emit('change', request.body);
+
+  reply.send();
+});
+
+fastify.post('/score', function (request, reply) {
+  fastify.io.emit('score', request.body);
 
   reply.send();
 });
@@ -111,6 +116,7 @@ fastify.listen(3000, function(err, address) {
 function buildJoinScript (serverUrl, uname = "") {
   const username = uname ?? "";
   return `(() => {
+    const challengeId = window.location.pathname.replace("/play/", "");
     const username = "${username}";
 
     function quickH (obj) {
@@ -146,8 +152,37 @@ function buildJoinScript (serverUrl, uname = "") {
         },
         redirect: 'follow',
         referrerPolicy: 'no-referrer',
-        body: JSON.stringify(payload)
+        body: JSON.stringify({...payload, challengeId})
       };
+    }
+
+    let lastScH = null;
+    function postScore (payload) {
+      const disScH = quickH(payload);
+      if (disScH === lastScH) return;
+      lastScH = disScH;
+
+      if (debug) {
+        console.log(' 🤖  Sending score event with payload:', { payload });
+      }
+
+      return fetch(
+        '${serverUrl}/score',
+        req(payload)
+      ).then(
+        resp => {
+          if (debug) {
+            console.log(' 🤖  recieved success:', { resp });
+          }
+          return resp;
+        },
+        err => {
+          if (debug) {
+            console.log(' 🤖  recieved error:', { err });
+          }
+          return err;
+        }
+      );
     }
 
     function fireAndForget (payload) {
@@ -156,7 +191,7 @@ function buildJoinScript (serverUrl, uname = "") {
       lastHash = disH;
 
       if (debug) {
-        console.log(' 🤖  Sending change event with payload:', { payload, req });
+        console.log(' 🤖  Sending change event with payload:', { payload });
       }
 
       return fetch(
@@ -177,6 +212,19 @@ function buildJoinScript (serverUrl, uname = "") {
         }
       );
     }
+
+    new MutationObserver((mutations) => {
+      mutations.forEach((m) => {
+        (m?.addedNodes ?? []).forEach((n) => {
+          const text = n?.textContent ?? null;
+          if (!text) return;
+          const found = text.match(/\s*You scored (\S+) with (\S+) match/i);
+          if (found?.length < 3) return;
+          const [_, score, percent] = found;
+          postScore({name, score, percent});
+        });
+      });
+    }).observe(document.querySelector(".Toastify"), { childList: true });
     
     const timer = setInterval(() => {
       fireAndForget({

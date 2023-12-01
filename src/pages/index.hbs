@@ -5,28 +5,112 @@
     <link rel="icon" href="https://glitch.com/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Css head2head</title>
+    <title>⚔️ Where's the Battle?</title>
 
-    <!-- import the webpage's stylesheet -->
-    <link rel="stylesheet" href="/style.css" />   
+    <style>
+      li a {
+        display: inline-flex;
+      }
+
+      h3 {
+        padding: 0;
+        margin: 0;
+      }
+    </style>
   </head>
   <body>
-    <section id="leaderboard"></section>
-    <main>
-      <details>
-        <summary>Show join script</summary>
-        <div class="copy-container">
-          <input id="copy-text" type="text" value="{{ joinScriptMin }}">
-          <button data-copy-to-clipboard data-target="copy-text">Copy 📋 </button>
-<pre><code>
-{{joinScript}}
-</code></pre>
+    <main style="margin:0 auto; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+      <header>
+        <h2>Welcome to multiplayer CSS battles</h2>
+        <p>Check out the links below to get started!</p>
+      </header>
+
+      <section>
+        <div class="card">
+          <a href="/login">
+            <h3>Select a username to generate a join script</h3>
+          </a>
         </div>
-      </details>
+        <div class="card">
+          <a href="/watch?challenge=30">
+              <h3>Spectate the battle</h3>
+            </a>
+        </div>
+        <div class="card">
+          <a target="_blank" href="https://cssbattle.dev/play/30">
+              <h3>Open 1st battle in new tab</h3>
+            </a>
+        </div>
+      </section>
     </main>
   </body>
-  <script src="/socket.io/socket.io.js"></script>
-  <script src="/app.js"></script>
+  <script>
+    (function () {
+      const s = document.createElement('style');
+      s.innerHTML = `
+      body {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+      section {
+        width: 100%;
+        display: flex;
+      }
+      .card a {
+        display: flex;
+        height: 100%;
+        flex-direction: column;
+        justify-content: center;
+        color: white;
+        font-size: 34px;
+        font-family: monospace;
+      }
+      .card a > * {
+        box-shadow: inset 0 0 0 9in #0000005e;
+      }
+      .card {
+        width: 300px;
+        height: 400px;
+        text-align: center;
+           margin: 32px;
+           overflow: hidden;
+           position: relative;
+           border: 8px solid yellow;
+           color: rgba(0, 0, 0, 0.4);
+           box-shadow: 0 25px 15px 5px;
+           border-radius: 8px;
+         }  [glare] {
+           --color1: rgb(0, 231, 255);
+           --color2: rgb(255, 0, 231);
+           content: "";
+           pointer-events:none;
+           position: absolute;
+           left: 0;
+           right: 0;
+           bottom: 0;
+           top: 0;   background-repeat: no-repeat;   opacity: 0.5;   mix-blend-mode: color-dodge;   transition: all 0.33s ease;   background-position: 90% 10%;   background-size: 300% 300%;   background-image: linear-gradient(     115deg,     transparent 0%,     var(--color1) 25%,     transparent 47%,     transparent 53%,     var(--color2) 75%,     transparent 100%   );   filter: brightness(0.5) contrast(1);   z-index: 100000000;   background-image: linear-gradient(     110deg,     transparent 25%,     var(--color1) 48%,     var(--color2) 52%,     transparent 75%   );   opacity: 0.88;   filter: brightness(0.66) contrast(1.33);   transition: none; }  [glare]::after {   content: "";   clip-path: inset(14.5% 8.5% 48.2% 8.5%);   background-image: radial-gradient(     farthest-corner circle at 20px 50px,     hsl(180, 100%, 95%) 5%,     hsla(0, 0%, 39%, 0.25) 55%,     hsla(0, 0%, 0%, 0.36) 110%   );   mix-blend-mode: overlay;   filter: brightness(0.6) contrast(3);   position: absolute;   overflow: hidden; } </style> `;
+           document.body.appendChild(s);
+           document.querySelectorAll(".card").forEach((card) => {
+             const d = document.createElement('div');
+             d.setAttribute('glare', "");
+             card.appendChild(d);
+             const rect = card.getBoundingClientRect();
+             const minY = rect.top;
+             const elHeight = rect.bottom - minY;
+             const minX = rect.left;
+             const elWidth = rect.right - minX;
+
+             card.addEventListener('mousemove', (ev) => {
+               const dx = ((ev.x - minX) / elWidth); const dy = ((ev.y - minY) / elHeight);
+               card.style.transform = `rotateY(${((dx * 20) - 10)}deg) rotateX(${((dy * 20) - 10)}deg)`;
+               card.style.boxShadow = `${(dx * 50) - 25}px ${(dy * 50) - 25}px 15px 5px`;
+               d.style.backgroundPosition = `${dy * 80}% ${dx * 80}%`;
+             });
+           })
+          })()
+  </script>
 </html>
 
 

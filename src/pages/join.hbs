@@ -6,13 +6,16 @@
   <link rel="icon" href="https://glitch.com/favicon.ico" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <title>Css head2head</title>
+  <title>⚔️ Join the battle!</title>
 
   <!-- import the webpage's stylesheet -->
   <link rel="stylesheet" href="/style.css" />
 </head>
 
 <body>
+  <header class="floating-header">
+    Players in lobby: <strong id="player-count"></strong>
+  </header>
   <div title="banana" class="fruit-card banana">
     <div banana>
       <div peel></div>
@@ -26,11 +29,12 @@
   </div>
 
   <main>
-    <h3>The script below can be pasted into any cssbattle challenge page. <a href="/watch">Click here</a> to connect as a viewer</h3>
+    <h3 id="message-one">The script below can be pasted into any cssbattle challenge page. <a href="/">Click here</a> to go back to homepage</h3>
+    <h3 id="message-two" class="hidden">✅ Successfully joined!. <a href="/">Click here</a> to go back to homepage</h3>
     <hr>
     <div class="copy-container">
       <input id="copy-text" type="text" value="{{ joinScriptMin }}">
-      <button data-copy-to-clipboard data-target="copy-text">Copy 📋 </button>
+      <button id="copy-to-clipboard" data-target="copy-text">Copy 📋 </button>
       <pre><code>{{joinScript}}</code></pre>
     </div>
   </main>
@@ -56,5 +60,6 @@
     </div>
   </div>
 </body>
+<script src="/socket.io/socket.io.js"></script>
 <script src="/app.js"></script>
 </html>

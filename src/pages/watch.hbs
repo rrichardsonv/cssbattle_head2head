@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>⚔️ Watch the battle!</title>
   <link rel="stylesheet" href="/watch.css" />
 </head>
 <body>
@@ -12,7 +12,11 @@
       <round-timer></round-timer>
       <score-board id="score-container"></score-board>
     </div>
-    <div id="preview-container" class="content"></div>
+    <div id="preview-container" class="content">
+      {{#if challengeN}}
+        <div><img src="https://cssbattle.dev/targets/{{challengeN}}.png" /></div>
+      {{/if}}
+    </div>
   </div>
 </body>
   <script src="/socket.io/socket.io.js"></script>
