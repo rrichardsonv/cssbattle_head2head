@@ -6,7 +6,7 @@
 ```sh
 npm i
 ```
-
+ 
 2. If you want to be able to play across the internet you'll need to download some way to do port forwarding (I use [ngrok](https://ngrok.com/download))
 
 
